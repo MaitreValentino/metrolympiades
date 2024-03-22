@@ -1,3 +1,11 @@
+<script setup>
+import RankingBox from './components/RankingBox.vue';
+
+const nb = ["akjzeb", "fkjqnfkj"]
+</script>
+
 <template>
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+    <main class="h-screen w-screen flex flex-col overflow-hidden grow justify-between">
+        <RankingBox v-for="test in nb" :my="test" /> 
+    </main>
 </template>
