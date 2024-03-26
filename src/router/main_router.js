@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignUpView from '../views/SignUpView.vue';
-import LogIn from '../views/LogIn.vue';
+import App from '../App.vue';
+import LogIn from '../views/LogInView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: LogIn
+        },
         /*{ //example code
             path: '/',
             redirect: () => {
@@ -24,11 +30,6 @@ const router = createRouter({
             name: 'signup',
             component: SignUpView
         },
-        {
-            path: '/login',
-            name: 'login',
-            component: LogIn
-        }
     ]
 });
 
