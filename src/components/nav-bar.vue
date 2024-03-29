@@ -1,21 +1,31 @@
 <script setup>
 import { ref } from 'vue'
+import useSupabase from '@/api/supabase'
+const { supabase } = useSupabase()
 
 const hidden = ref(true)
+var teamName = ref()
 
 function afficheNavbar() {
   if (hidden.value == true) hidden.value = false
   else if (hidden.value == false) hidden.value = true
 }
+
+async function getTeamName() {
+  const { data: teams } = await supabase.from('teams').select('name')
+  teamName.value = teams[0].name
+}
+
+getTeamName()
 </script>
 
 <template>
   <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-          >Team name</span
-        >
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{
+          teamName
+        }}</span>
       </a>
       <button
         data-collapse-toggle="navbar-hamburger"
