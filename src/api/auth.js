@@ -22,7 +22,10 @@ async function logIn(email,password) {
     email: email,
     password: password,
   })
-  router.push('/')
+  if(!error){
+    router.push('/')
+  }
+  
 }
 
 async function isLoggedIn(){
