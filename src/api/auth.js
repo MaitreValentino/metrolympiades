@@ -1,36 +1,37 @@
-import {useRouter} from "vue-router";
-import router from "../router/main_router";
-import useSupabase from "../api/supabase"
+import { useRouter } from 'vue-router'
+import router from '../router/main_router'
+import useSupabase from '../api/supabase'
 
-const {supabase} = useSupabase()
+const { supabase } = useSupabase()
 
-async function signUp(email,password) {
-    const { data, error } = await supabase.auth.signUp({
+async function signUp(email, password) {
+  const { data, error } = await supabase.auth.signUp({
     email: email,
-    password: password,
+    password: password
   })
+  if (!error) {
     router.push('/')
+  }
 }
 
 async function signOut() {
-    const { error } = await supabase.auth.signOut()
-    router.push('signup')
-  }
+  const { error } = await supabase.auth.signOut()
+  router.push('signup')
+}
 
-async function logIn(email,password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+async function logIn(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
-    password: password,
+    password: password
   })
-  if(!error){
+  if (!error) {
     router.push('/')
   }
-  
 }
 
-async function isLoggedIn(){
-    const { data } = await supabase.auth.getSession();
-    return !!data.session;
+async function isLoggedIn() {
+  const { data } = await supabase.auth.getSession()
+  return !!data.session
 }
 
-export {signUp,isLoggedIn,logIn,signOut}
+export { signUp, isLoggedIn, logIn, signOut }
