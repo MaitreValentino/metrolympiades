@@ -12,6 +12,7 @@ const team1model = defineModel('team1model')
 const team2model = defineModel('team2model')
 const sportmodel = defineModel('sportmodel')
 const timemodel = defineModel('timemodel')
+const errorMessage = ref('')
 
 async function getTeam(){
     const{data} = await supabase.from('teams').select()
@@ -36,6 +37,9 @@ async function submit(){
         team2model.value = ""
         sportmodel.value = ""
         timemodel.value = ""
+        errorMessage.value = ''
+    }else{
+        errorMessage.value = 'You have to enter all fields and with another team than your team'
     }
 }
 
@@ -50,6 +54,10 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col items-center gap-8 p-20">
+        <div v-if="errorMessage.length != 0" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Error !</strong>
+      <span class="block sm:inline">{{ errorMessage }}</span>
+      </div>
         
         <h1 class="text-3xl text-blue-600">Matchs</h1>
         <label> Team 1:<select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="team1model" name="team1" id="team1-select">
