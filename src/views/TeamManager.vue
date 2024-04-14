@@ -19,8 +19,11 @@ async function getMemberInList() {
 }
 
 async function getTeamName() {
-  const { data: teams } = await supabase.from('teams').select('name')
-  teamName.value = teams[0].name
+  let {
+    data: { user }
+  } = await supabase.auth.getUser()
+  const { data } = await supabase.from('teams').select().eq('leader', user.id)
+  console.log(data[0])
 }
 
 function addMember() {
@@ -39,11 +42,7 @@ async function saveTeam() {
     newMembers.push(member)
   })
 
-  const { data, error } = await supabase
-    .from('teams')
-    .update({ members: newMembers })
-    .eq('name', 'LesGoats')
-    .select()
+  await supabase.from('teams').update({ members: newMembers }).eq('name', 'LesGoats').select()
 }
 
 getTeamName()
