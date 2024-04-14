@@ -70,6 +70,42 @@ getMemberInList()
 </script>
 
 <template>
+  <div
+    v-if="alertSaveOpen"
+    class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-green-500"
+  >
+    <span class="text-xl inline-block mr-5 align-middle">
+      <i class="fas fa-bell"></i>
+    </span>
+    <span class="inline-block align-middle mr-8">
+      <b class="capitalize">Parfait!</b> La sauvegarde a bien été effectué !
+    </span>
+    <button
+      class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
+      v-on:click="closeSaveAlert()"
+    >
+      <span>×</span>
+    </button>
+  </div>
+
+  <div
+    v-if="alertCancelOpen"
+    class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500"
+  >
+    <span class="text-xl inline-block mr-5 align-middle">
+      <i class="fas fa-bell"></i>
+    </span>
+    <span class="inline-block align-middle mr-8">
+      <b class="capitalize">Pas de problème!</b> Les modifications ont été annulé!
+    </span>
+    <button
+      class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
+      v-on:click="closeCancelAlert()"
+    >
+      <span>×</span>
+    </button>
+  </div>
+
   <div class="flex flex-col items-center gap-9 p-5">
     <input class="text-4xl text-center" type="text" v-model="teamName" placeholder="Nom d'équipe" />
   </div>
@@ -101,16 +137,44 @@ getMemberInList()
     <button
       type="submit"
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      @click="saveTeam"
+      @click="saveTeam(), openSaveAlert()"
     >
       Sauvegarder
     </button>
     <button
       type="submit"
-      @click="cancelTeamModification"
+      @click="cancelTeamModification(), openCancelAlert()"
       class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
     >
       Annuler
     </button>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'save-alert',
+  data() {
+    return {
+      alertSaveOpen: false,
+      alertCancelOpen: false
+    }
+  },
+  methods: {
+    closeSaveAlert: function () {
+      this.alertSaveOpen = false
+    },
+    openSaveAlert: function () {
+      this.alertCancelOpen = false
+      this.alertSaveOpen = true
+    },
+    closeCancelAlert: function () {
+      this.alertCancelOpen = false
+    },
+    openCancelAlert: function () {
+      this.alertSaveOpen = false
+      this.alertCancelOpen = true
+    }
+  }
+}
+</script>
