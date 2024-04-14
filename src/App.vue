@@ -1,8 +1,9 @@
 <script setup>
-import CreateMatchs from "./views/CreateMatchs.vue"
-
+import { RouterView } from 'vue-router'
+import Navbar from './components/nav-bar.vue'
 </script>
 
 <template>
-  <CreateMatchs></CreateMatchs>
+  <Navbar />
+  <RouterView />
 </template>
