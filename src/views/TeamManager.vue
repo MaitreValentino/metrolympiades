@@ -12,22 +12,29 @@ const tabMember = ref([])
 const countMember = computed(() => tabMember.value.length)
 
 async function getMemberInList() {
-  const { data: members } = await supabase.from('teams').select('members').eq('name', 'LesGoats')
-  members[0].members.forEach((member) => {
-    tabMember.value.push(member)
-  })
+  let {
+    data: { user }
+  } = await supabase.auth.getUser()
+  const { data: members } = await supabase.from('teams').select('members').eq('leader', user.id)
+  if (members[0].members != null) {
+    members[0].members.forEach((member) => {
+      tabMember.value.push(member)
+    })
+  }
 }
 
 async function getTeamName() {
   let {
     data: { user }
   } = await supabase.auth.getUser()
-  const { data } = await supabase.from('teams').select().eq('leader', user.id)
-  console.log(data[0])
+  const { data } = await supabase.from('teams').select('name').eq('leader', user.id)
+  teamName.value = data[0].name
 }
 
 function addMember() {
-  tabMember.value.push(name.value)
+  if (name.value != '') {
+    tabMember.value.push(name.value)
+  }
   name.value = ''
 }
 
@@ -36,13 +43,26 @@ function deleteMember(member) {
 }
 
 async function saveTeam() {
+  let {
+    data: { user }
+  } = await supabase.auth.getUser()
+
   const newMembers = Array()
 
   tabMember.value.forEach((member) => {
     newMembers.push(member)
   })
 
-  await supabase.from('teams').update({ members: newMembers }).eq('name', 'LesGoats').select()
+  await supabase.from('teams').update({ members: newMembers }).eq('leader', user.id).select()
+
+  await supabase.from('teams').update({ name: teamName.value }).eq('leader', user.id).select()
+}
+
+function cancelTeamModification() {
+  teamName.value = ''
+  tabMember.value = []
+  getTeamName()
+  getMemberInList()
 }
 
 getTeamName()
@@ -51,7 +71,7 @@ getMemberInList()
 
 <template>
   <div class="flex flex-col items-center gap-9 p-5">
-    <input class="text-4xl text-center" type="text" :value="teamName" placeholder="Nom d'équipe" />
+    <input class="text-4xl text-center" type="text" v-model="teamName" placeholder="Nom d'équipe" />
   </div>
 
   <div class="flex flex-col">
@@ -87,6 +107,7 @@ getMemberInList()
     </button>
     <button
       type="submit"
+      @click="cancelTeamModification"
       class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
     >
       Annuler
