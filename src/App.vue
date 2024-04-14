@@ -1,8 +1,11 @@
 <script setup>
+import { RouterView } from 'vue-router'
+import Navbar from './components/nav-bar.vue'
 
 </script>
 
+
 <template>
-    <main class="grid place-content-center pt-2">
-    </main>
+  <Navbar />
+  <RouterView />
 </template>
