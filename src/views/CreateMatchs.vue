@@ -1,51 +1,42 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import useSupabase from '../api/supabase';
-
-const {supabase} = useSupabase();
+import {getTeam1, getTeam2, getAllSport, createMatch} from "../api/createMatch"
 
 
 
+const team1 = ref([])
 const team = ref([])
 const sports = ref([])
-const team1model = defineModel('team1model')
 const team2model = defineModel('team2model')
 const sportmodel = defineModel('sportmodel')
 const timemodel = defineModel('timemodel')
 const errorMessage = ref('')
 
-async function getTeam(){
-    const{data} = await supabase.from('teams').select()
-    team.value = data
+async function setup(){
+    team1.value = await getTeam1()
+    team.value = await getTeam2()
+    sports.value = await getAllSport()
 }
 
-async function getSport(){
-    const{data} = await supabase.from('sports').select()
-    sports.value = data
-}
 
 async function submit(){
-    if(team1model != undefined && team2model != undefined && timemodel != undefined && sportmodel != undefined && team1model.value != team2model.value){
-
-        await supabase.from('matchs').insert({
-            team1: team1model.value,
-            team2: team2model.value,
-            sport: sportmodel.value,
-            time: timemodel.value,
-        })
-        team1model.value = ""
-        team2model.value = ""
-        sportmodel.value = ""
-        timemodel.value = ""
-        errorMessage.value = ''
+    if( team2model != undefined && timemodel != undefined && sportmodel != undefined && timemodel.value != undefined){
+        if( team1.value.id != team2model.value){
+            await createMatch(team1.value.id, team2model.value, sportmodel.value, timemodel.value)
+            team2model.value = ""
+            sportmodel.value = ""
+            timemodel.value = ""
+            errorMessage.value = ''
+        }else{
+            errorMessage.value = 'You have to enter another team than your team'
+        }
     }else{
-        errorMessage.value = 'You have to enter all fields and with another team than your team'
+        errorMessage.value = 'You have to enter all fields'
     }
 }
 
 onMounted(() => {
-    getTeam()
-    getSport()
+    setup()
 })
 
 
@@ -60,9 +51,9 @@ onMounted(() => {
       </div>
         
         <h1 class="text-3xl text-blue-600">Matchs</h1>
-        <label> Team 1:<select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="team1model" name="team1" id="team1-select">
-        <option v-for="item in team" :value=item.id>{{ item.name }}</option>
-        </select></label>
+        <label> Team 1:
+            <p class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ team1.name }}</p>
+        </label>
         <label>Team 2:
             <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="team2model" name="team2" id="team2-select">
             <option v-for="item in team" :value=item.id>{{ item.name }}</option>

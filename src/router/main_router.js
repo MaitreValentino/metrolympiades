@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import SignUpView from '../views/SignUpView.vue';
 import App from '../App.vue';
 import LogIn from '../views/LogInView.vue';
+import CreateMatchs from '@/views/CreateMatchs.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
             name: 'signup',
             component: SignUpView
         },
+        {
+            path: '/createMatch',
+            name: 'createMatch',
+            component: CreateMatchs,
+        }
     ]
 });
 
