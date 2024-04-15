@@ -1,6 +1,6 @@
 <script setup>
 import RankingBox from '../components/RankingBox.vue';
-import useSupabase from './api/supabase';
+import useSupabase from '@/api/supabase';
 import { onMounted,ref } from 'vue';
 
 const {supabase} = useSupabase();
