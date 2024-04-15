@@ -4,9 +4,9 @@ let supabase = null;
 
 export default function useSupabase(){
 
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseUrl = process.env.VITE_SUPABASE_URL;
 
-    const anon = import.meta.env.VITE_SUPABASE_ANNON;
+    const anon = process.env.VITE_SUPABASE_ANNON;
     
     if(supabase == null){
         supabase = createClient(supabaseUrl, anon)
