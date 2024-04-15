@@ -53,7 +53,10 @@ const router = createRouter({
         {
             path: '/displayMatchs',
             name: 'displayMatchs',
-            component: DisplayMatchView
+            component: DisplayMatchView,
+            meta:{
+                protected: true
+            }
         },{
             path: '/createMatch',
             name: 'createMatch',

@@ -4,7 +4,7 @@ let supabase = null;
 
 export default function useSupabase(){
 
-    const supabaseUrl = import.meta.env.SUPABASE_URL;
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
     const anon = import.meta.env.VITE_SUPABASE_ANNON;
     
