@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import {isLoggedIn} from "../api/auth"
 import SignUpView from '../views/SignUpView.vue';
 import App from '../App.vue';
 import LogIn from '../views/LogInView.vue';
 import DisplayMatchView from '@/views/DisplayMatchView.vue';
 import EditScoreView from '@/views/EditScoreView.vue';
 import CreateMatchs from '@/views/CreateMatchs.vue';
-import TeamManager from '@/views/TeamManager.vue'
+import TeamManager from '@/views/TeamManager.vue';
+import VisualizeView from '@/views/VisualizeView.vue';
 
 
 const router = createRouter({
@@ -14,7 +16,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: DisplayMatchView
+            component: VisualizeView
         },
         /*{ //example code
             path: '/',
@@ -43,7 +45,10 @@ const router = createRouter({
         {
             path: '/editScore/:id',
             name: 'editScore',
-            component: EditScoreView
+            component: EditScoreView,
+            meta:{
+                protected: true
+            }
         },
         {
             path: '/displayMatchs',
@@ -53,10 +58,16 @@ const router = createRouter({
             path: '/createMatch',
             name: 'createMatch',
             component: CreateMatchs,
+            meta:{
+                protected: true
+            }
         },{
             path: '/teamManager',
             name: 'teamManager',
-            component: TeamManager
+            component: TeamManager,
+            meta:{
+                protected: true
+            }
         }
     ]
 });
@@ -67,7 +78,7 @@ router.beforeEach(async(to,from)=>{
         if(isLogged)
             return true
         else
-            return "/signup" 
+            return "/login" 
     }
 })
 

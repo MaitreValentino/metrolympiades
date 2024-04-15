@@ -9,14 +9,12 @@ async function signUp(email, password) {
     email: email,
     password: password
   })
-  if (!error) {
-    router.push('/')
-  }
+  router.push({name:'teamManager'})
 }
 
 async function signOut() {
   const { error } = await supabase.auth.signOut()
-  router.push('signup')
+  router.push('logIn')
 }
 
 async function logIn(email, password) {
