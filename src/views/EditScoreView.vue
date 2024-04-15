@@ -1,7 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import useSupabase from '../api/supabase';
-import router from '../router/main_router'
+import router from '../router/main_router';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const matchIdRoute = route.params.id;
 
 const { supabase } = useSupabase();
 
@@ -16,7 +20,7 @@ const team2Score = ref()
 
 async function match() {
     const { data } = await supabase.from("matchs")
-        .select('id, team1(name), team2 (name),time,sports (intitule), team1_score, team2_score').or('id.eq.3f771bf8-8138-43c2-8e51-34660682accd');
+        .select('id, team1(name), team2 (name),time,sports (intitule), team1_score, team2_score').or('id.eq.'+matchIdRoute);
     team1Name.value = data[0].team1.name
     team2Name.value = data[0].team2.name
     sport.value = data[0].sports.intitule

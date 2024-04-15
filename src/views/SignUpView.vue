@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue"
 import {signUp} from "../api/auth"
+import router from "@/router/main_router";
 
 const email = ref()
 const password = ref()
@@ -25,7 +26,7 @@ function signup(){
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-9 p-20">
+  <div class="flex flex-col items-center gap-9 p-10">
     <h1 class="text-3xl text-blue-600">Metrolympiades</h1>
     <img src="../../public/images/olympiade_logo.png">  
     <h2 class="text-2xl">Create my account</h2>

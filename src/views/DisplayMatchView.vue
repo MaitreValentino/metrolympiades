@@ -5,7 +5,15 @@ const { supabase } = useSupabase()
 
 let matchs = ref([])
 
-async function getMatches() {
+const team1Name = ref("")
+const team2Name = ref("")
+const sport = ref("")
+const time = ref("")
+const matchId = ref()
+const team1Score = ref()
+const team2Score = ref()
+
+async function match() {
 
     const todayDate = new Date();
     const todayHour = todayDate.getHours();
@@ -13,38 +21,14 @@ async function getMatches() {
     const todaySeconds = todayDate.getSeconds();
 
     const todayTime = `${todayHour}:${todayMinutes}:${todaySeconds}`;
-    const matchesQuery = await supabase.from('matchs').select('*').gte('time', todayTime).order('time', { ascending: true });
-    const teamsQuery = await supabase.from('teams').select('*');
-    const sportQuery = await supabase.from('sports').select('*');
 
-    const matches = matchesQuery.data;
-    const teams = teamsQuery.data;
-    const sports = sportQuery.data;
-
-    const teamNamesById = teams.reduce((acc, team) => {
-        acc[team.id] = team.name;
-        return acc;
-    }, {});
-
-    const sportNameById = sports.reduce((acc, sport) => {
-        acc[sport.id] = sport.intitule;
-        return acc;
-    }, {});
-
-    const matchesWithJoins = matches.map(match => ({
-        ...match,
-        team1_name: teamNamesById[match.team1],
-        team2_name: teamNamesById[match.team2],
-        time: match.time,
-        sport: sportNameById[match.sport],
-        team1_score: match.team1_score == null ? 0 : match.team1_score,
-        team2_score: match.team2_score == null ? 0 : match.team2_score,
-    }));
-
-    matchs.value = matchesWithJoins
+    const { data } = await supabase.from("matchs")
+        .select('id, team1(name), team2 (name),time,sports (intitule), team1_score, team2_score').gte('time', todayTime).order('time', { ascending: true });
+    matchs.value = data
+    console.log(matchs.value)
 }
 
-getMatches();
+match()
 
 </script>
 
@@ -53,10 +37,10 @@ getMatches();
     <div class="p-5">
         <div v-for="match in matchs" :key="match.id" class="flex flex-col items-center gap-5">
             <div class="border-2 rounded-lg border-cyan-600 p-2">
-                <p>{{ match.team1_name }} VS {{ match.team2_name }}</p>
+                <p>{{ match.team1.name }} VS {{ match.team2.name }}</p>
                 <div class="flex flex-col items-center">
-                    <p>{{ match.sport }}</p>
-                    <p>{{ match.team1_score }} - {{ match.team2_score }}</p>
+                    <p>{{ match.sports.intitule  }}</p>
+                    <p>{{ match.team1_score != null ? match.team1_score : 0 }} - {{ match.team2_score != null ? match.team2_score : 0 }}</p>
                     <p>{{ match.time }}</p>
                     <div
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -74,9 +58,9 @@ getMatches();
     </div>
     <footer class="flex flex-row-reverse p-5 static bottom-0">
         <div class="flex items-center justify-center p-3 bg-cyan-600 rounded-full">
-            <!-- <router-link :to="{ name: 'todo' }" class="text-white text-lg"> -->
+            <router-link :to="{ name: 'createMatch' }" class="text-white text-lg">
                 +
-            <!-- </router-link> -->
+            </router-link>
         </div>
     </footer>
 

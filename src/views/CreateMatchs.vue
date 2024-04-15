@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import {getTeam1, getTeam2, getAllSport, createMatch} from "../api/createMatch"
+import router from '@/router/main_router';
 
 
 
@@ -33,6 +34,7 @@ async function submit(){
     }else{
         errorMessage.value = 'You have to enter all fields'
     }
+router.push({name: 'displayMatchs'})
 }
 
 onMounted(() => {
