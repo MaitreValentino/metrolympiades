@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from 'vue-router';
 import SignUpView from '../views/SignUpView.vue';
 import App from '../App.vue';
@@ -29,6 +30,11 @@ const router = createRouter({
             }
         },*/
         {
+            path: '/login',
+            name: 'login',
+            component: LogIn
+        },
+        {
             path: '/signup',
             name: 'signup',
             component: SignUpView
@@ -45,17 +51,12 @@ const router = createRouter({
     ]
 });
 
-
-    }
-  ]
-})
-
-router.beforeEach(async (to, from) => {
-  if (to.meta.protected) {
-    const isLogged = await isLoggedIn()
-    if (isLogged) return true
-    else return '/signup'
-  }
-})
-
+router.beforeEach(async(to,from)=>{
+    if(to.meta.protected){
+        const isLogged = await isLoggedIn()
+        if(isLogged)
+            return true
+        else
+            return "/signup" 
+    })
 export default router
