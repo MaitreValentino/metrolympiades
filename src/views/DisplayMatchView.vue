@@ -60,13 +60,13 @@ getMatches();
                     <p>{{ match.time }}</p>
                     <div
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <!-- <router-link :to="{ name: 'todo' }" class="text-white text-lg"> -->
+                        <router-link :to="{ name: 'editScore', params:{id : match.id} }" class="text-white text-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path
                                     d="M18.308 0l-16.87 16.873-1.436 7.127 7.125-1.437 16.872-16.875-5.691-5.688zm-15.751 21.444l.723-3.585 12.239-12.241 2.861 2.862-12.239 12.241-3.584.723zm17.237-14.378l-2.861-2.862 1.377-1.377 2.861 2.861-1.377 1.378z" />
                             </svg>
                             <span class="sr-only">Edit match</span>
-                        <!-- </router-link> -->
+                        </router-link>
                     </div>
                 </div>
             </div>
