@@ -1,21 +1,22 @@
-
 import { createRouter, createWebHistory } from 'vue-router';
 import SignUpView from '../views/SignUpView.vue';
 import App from '../App.vue';
 import LogIn from '../views/LogInView.vue';
+import DisplayMatchView from '@/views/DisplayMatchView.vue';
+import EditScoreView from '@/views/EditScoreView.vue';
 import CreateMatchs from '@/views/CreateMatchs.vue';
 import TeamManager from '@/views/TeamManager.vue'
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: LogIn
-    },
-    /*{ //example code
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: DisplayMatchView
+        },
+        /*{ //example code
             path: '/',
             redirect: () => {
                 return { name: 'chat', params: { chatId: 'new' } };
@@ -40,6 +41,15 @@ const router = createRouter({
             component: SignUpView
         },
         {
+            path: '/editScore/:id',
+            name: 'editScore',
+            component: EditScoreView
+        },
+        {
+            path: '/displayMatchs',
+            name: 'displayMatchs',
+            component: DisplayMatchView
+        },{
             path: '/createMatch',
             name: 'createMatch',
             component: CreateMatchs,
@@ -58,5 +68,7 @@ router.beforeEach(async(to,from)=>{
             return true
         else
             return "/signup" 
-    })
-export default router
+    }
+})
+
+export default router;
